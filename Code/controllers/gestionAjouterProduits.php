@@ -1,7 +1,16 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['autorisation']) || $_SESSION['autorisation'] !== "oui" || 
+    !isset($_SESSION['role']) || $_SESSION['role'] !== 'administrateur') {
+    header("Location: gestionAfficherProduits.php?alert=error&message=Accès%20non%20autorisé");
+    exit();
+}
+
 require "../views/ajouter.php";
 
 if(isset($_POST['ajouter']) && isset($_POST['ref']) && isset($_POST['lib']) && isset($_POST['prix']) && isset($_POST['qte']) && isset($_POST['desc']) && isset($_FILES['image']) && isset($_POST['type'])) {
+
     $ref = $_POST['ref'];
     $lib = $_POST['lib'];
     $prix = $_POST['prix'];

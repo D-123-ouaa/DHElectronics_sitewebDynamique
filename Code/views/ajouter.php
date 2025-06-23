@@ -4,20 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DHElectronics</title>
-  <link rel="icon" href="../images/logoChat.png" type="image/icon" style="border-radius:50% ;">
   <link rel="stylesheet" href="../views/headerFooter.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<div class="">
-  <header class="site-header">
+<header class="site-header">
     <div class="container">
-      <h1 class="logo">DHElectronics</h1>
+      <div class="d-flex justify-content-between align-items-center">
+            <h1 class="logo">DHElectronics</h1>
+            <div>
+                <?php if(isset($_SESSION['autorisation']) && $_SESSION['autorisation'] === "oui"): ?>
+                    <div class="user-info text-white">
+                        <?php if ($_SESSION['role'] === 'administrateur'): ?>
+                            <span class="badge bg-danger ms-2">Administrateur</span>
+                        <?php else: ?>
+                            <span class="badge bg-info ms-2">Utilisateur</span>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
       <nav class="navbar">
-        <a href="index.php">Accueil</a>
-        <a href="ajouter_produit.php">Ajouter</a>
-        <a href="login.php">Connexion</a>
+        <a href="../controllers/gestionAfficherProduits.php">Accueil</a>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'administrateur'): ?>
+          <a href="../controllers/gestionAjouterProduits.php">Ajouter</a>
+        <?php endif; ?>
+        <?php if(isset($_SESSION['autorisation']) && $_SESSION['autorisation'] === "oui"): ?>
+          <a href="../controllers/gestionDeconnection.php">Déconnexion</a>
+        <?php else: ?>
+          <a href="../controllers/gestionUsers.php">Connexion</a>
+        <?php endif; ?>
       </nav>
     </div>
   </header>

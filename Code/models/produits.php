@@ -45,6 +45,41 @@ class Produits{
     }
   }
 
+  public function SupprimerProduit($ref) {
+    try {
+        $con = $this->connection();
+        $sql = "DELETE FROM produit WHERE RefPdt = :ref";
+        $statement = $con->prepare($sql);
+        return $statement->execute([':ref' => $ref]);
+    } catch(PDOException $e) {
+        error_log("Erreur suppression produit: " . $e->getMessage());
+        return false;
+    }
+}
+
+  public function getAllProduits() {
+    $con = $this->connection();
+    if($con != null){
+        $sql = "SELECT * FROM produit";
+        $stmt = $con->query($sql);
+        $donnees = $stmt->fetchAll();
+        return $donnees;
+    }
+  }
+
+  public function getProduitParRef($ref) {
+    try {
+        $con = $this->connection(); 
+        $sql = "SELECT * FROM produit WHERE RefPdt = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->execute([$ref]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Erreur récupération produit: " . $e->getMessage());
+        return null;
+    }
+  }
+
 
 }
 
